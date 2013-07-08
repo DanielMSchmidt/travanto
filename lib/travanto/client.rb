@@ -20,11 +20,7 @@ module Travanto
       request.run
       response = request.response
 
-      if response.success?
-        return JSON.parse(response.body)
-      else
-        return nil
-      end
+      return ::Travanto::Response.new(response.success?, response.body)
     end
   end
 end

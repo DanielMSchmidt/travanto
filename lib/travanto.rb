@@ -1,6 +1,6 @@
 require "version"
 require "travanto/client"
+require "travanto/response"
 
 module Travanto
-  # Your code goes here...
 end

@@ -21,11 +21,23 @@ class ClientTest < MiniTest::Unit::TestCase
       }
     ]
     response = Typhoeus::Response.new(code: 200, body: JSON.dump(response_body))
-    Typhoeus.stub("http://api.travanto.de/json/belegzeiten/102565").and_return(response)
+    Typhoeus.stub(/travanto/).and_return(response)
 
-    c = ::Travanto::Client.new "user100267", "testcode"
-    results = c.occupancies "102565"
+    c = ::Travanto::Client.new "user1234", "testtest"
+    results = c.occupancies "1000"
 
-    assert_equal response_body, results
+    assert response.success?
+    assert_equal response_body, results.results
+  end
+
+  def test_returns_empty_resultset_on_remote_errors
+    response = Typhoeus::Response.new(code: 401, body: "Nicht authentifiziert.")
+    Typhoeus.stub(/travanto/).and_return(response)
+
+    c = ::Travanto::Client.new "user1234", "testtest"
+    response = c.occupancies "1000"
+
+    assert !response.success?
+    assert_equal [], response.results
   end
 end
