@@ -1,4 +1,5 @@
 require 'typhoeus'
+require 'json'
 
 module Travanto
   class Client
@@ -10,10 +11,20 @@ module Travanto
       @password = password
     end
 
-    remote_defaults :on_success => lambda {|response| JSON.parse(response.body)},
-                    :on_failure => lambda {|response| puts "error code: #{response.code}"},
-                    :base_uri   => "http://api.travanto.de"
+    def occupancies object_id
+      request = Typhoeus::Request.new(
+        "http://api.travanto.de/json/belegzeiten/#{object_id}",
+        method: :get,
+        userpwd: "#{username}:#{password}"
+      )
+      request.run
+      response = request.response
 
-    define_remote_method :belegzeiten, :path => '/json/belegzeiten/:object_id'
+      if response.success?
+        return JSON.parse(response.body)
+      else
+        return nil
+      end
+    end
   end
 end
