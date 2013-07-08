@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require './version'
+require 'version'
 
 Gem::Specification.new do |spec|
   spec.name          = "travanto"
   spec.version       = Travanto::VERSION
   spec.authors       = ["Raphael Randschau"]
   spec.email         = ["rrandschau@weluse.de"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{travanto.de api client}
+  spec.summary       = %q{travanto.de api client}
+  spec.homepage      = "http://weluse.de"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
