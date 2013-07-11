@@ -4,7 +4,11 @@ module Travanto
 
     def initialize success, body
       @success = success
-      @body = JSON.parse(body) if success?
+      if success?
+        @body = JSON.parse(body)
+      else
+        @body = body
+      end
     end
 
     def success?

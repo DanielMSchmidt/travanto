@@ -14,8 +14,9 @@ module Travanto
     def occupancies object_id
       request = Typhoeus::Request.new(
         "http://api.travanto.de/json/belegzeiten/#{object_id}",
-        method: :get,
-        userpwd: "#{username}:#{password}"
+        method: :GET,
+        userpwd: "#{username}:#{password}",
+        headers: { Accept: "application/json", :"Content-type" => 'application/json' }
       )
       request.run
       response = request.response
@@ -26,9 +27,10 @@ module Travanto
     def save_occupancies object_id, occupancies
       request = Typhoeus::Request.new(
         "http://api.travanto.de/json/belegzeiten/#{object_id}",
-        method: :get,
+        method: :PUT,
         userpwd: "#{username}:#{password}",
-        body: [serialize(object_id, occupancies)]
+        body: serialize(object_id, occupancies).to_json,
+        headers: { Accept: "application/json", :"Content-type" => 'application/json' }
       )
       request.run
       response = request.response
@@ -37,7 +39,7 @@ module Travanto
     end
 
     def serialize object_id, occupancies
-      return {
+      return [{
         objekt: object_id,
         belegzeiten: occupancies.map { |occupancy|
           {
@@ -45,7 +47,7 @@ module Travanto
             abreise: occupancy.last
           }
         }
-      }
+      }]
     end
   end
 end
