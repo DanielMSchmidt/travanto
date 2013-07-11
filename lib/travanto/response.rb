@@ -5,7 +5,12 @@ module Travanto
     def initialize success, body
       @success = success
       if success?
-        @body = JSON.parse(body)
+        begin
+          @body = JSON.parse(body)
+        rescue JSON::ParserError => e
+          @body = body
+          @success = false
+        end
       else
         @body = body
       end
