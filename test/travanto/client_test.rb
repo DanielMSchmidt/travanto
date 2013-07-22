@@ -45,15 +45,15 @@ class ClientTest < MiniTest::Unit::TestCase
   end
 
   def test_generates_proper_serialization
-    serialized = {
-      objekt: "1000",
-      belegzeiten: [
-        {
-          anreise: "2013-01-01",
-          abreise: "2013-05-01"
-        }
-      ]
-    }
+    serialized = [{
+        objekt: "1000",
+        belegzeiten: [
+          {
+            anreise: "2013-01-01",
+            abreise: "2013-05-01"
+          }
+        ]
+      }]
 
     c = ::Travanto::Client.new "user1234", "testtest"
     assert_equal serialized, c.serialize("1000", [["2013-01-01", "2013-05-01"]])
